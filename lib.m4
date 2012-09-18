@@ -1,6 +1,6 @@
 define(`ocamlcode', `syscmd(`cat $1 | sed "s/^/> /g"')')dnl
 define(`ocamlexec',
-`# $2
+`syscmd(`echo "# $2"')dnl
 syscmd(`echo -n "$2" | ocaml -init $1 | tail -n +4')dnl
 ')dnl
 define(`header',
