@@ -1,14 +1,16 @@
-(* 1 *)
 let base_bits = 31;;
 let base_mask = (1 lsl base_bits) - 1;;
 
-let buint_cons (x : int) (xs : int list) : int list =
+type buint = int list;;
+
+let buint_cons (x : int) (xs : buint) : buint =
   match x, xs with
     | 0, [] -> []
     | _ -> x :: xs
   ;;
 
-let rec buint_add' (l : int list) (r : int list) (cf : bool) : int list =
+(* 1 *)
+let rec buint_add' (l : buint) (r : buint) (cf : bool) : buint =
   match l, r, cf with
     | [], xs, false | xs, [], false -> xs
     | [], [], true -> [1]
@@ -21,17 +23,17 @@ let rec buint_add' (l : int list) (r : int list) (cf : bool) : int list =
         (buint_add' xls xrs (if cf then x <= max xl xr else x < max xl xr))
   ;;
 
-let buint_add (l : int list) (r : int list) = buint_add' l r false;;
+let buint_add (l : buint) (r : buint) = buint_add' l r false;;
 
 (* 2 *)
-let rec buint_fib2 : int -> int list * int list =
+let rec buint_fib2 : int -> buint * buint =
   function
     | 0 -> ([], [1])
     | n -> let (x, y) = buint_fib2 (pred n) in (y, buint_add x y)
   ;;
 
 (* 3 *)
-let rec buint_suint_mult (l : int list) (n : int) : int list =
+let rec buint_suint_mult (l : buint) (n : int) : buint = 
   match l with
     | [] -> []
     | x :: xs ->
@@ -41,14 +43,14 @@ let rec buint_suint_mult (l : int list) (n : int) : int list =
   ;;
 
 (* 4 *)
-let rec buint_fact : int -> int list =
+let rec buint_fact : int -> buint =
   function
     | 0 -> [1]
     | n -> buint_suint_mult (buint_fact (pred n)) n
   ;;
 
 (* 5 *)
-let rec buint_mult (l : int list) : int list -> int list =
+let rec buint_mult (l : buint) : buint -> buint =
   function
     | [] -> []
     | x :: xs ->
@@ -56,7 +58,7 @@ let rec buint_mult (l : int list) : int list -> int list =
   ;;
 
 (* 6 *)
-let rec buint_suint_div_mod (l : int list) (n : int) : int list * int =
+let rec buint_suint_div_mod (l : buint) (n : int) : buint * int =
   match l with
     | [] -> [], 0
     | x :: xs ->
@@ -65,7 +67,7 @@ let rec buint_suint_div_mod (l : int list) (n : int) : int list * int =
   ;;
 
 (* 7 *)
-let buint_baseconv (base : int) : int list -> int list =
+let buint_baseconv (base : int) : buint -> buint =
   let rec bbrec result =
     function
       | [] -> result
