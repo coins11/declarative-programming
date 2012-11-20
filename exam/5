@@ -1,0 +1,32 @@
+concat の定義:
+
+let rec concat xs =
+    match xs with
+        | [] -> []
+        | x :: xs -> x @ concat xs
+
+公理:
+
+1. [] @ ys = ys
+2. (x :: xs) @ ys = x :: (xs @ ys)
+3. (xs @ ys) @ ys = xs @ (ys @ zs)
+
+証明:
+
+concat (xs @ ys) = concat xs @ concat ys を xs に関する帰納法を用いて証明する。
+
+1. xs = [] の場合
+  concat ([] @ ys)
+= concat ys                             (公理1より)
+= [] @ concat ys                        (公理1より)
+= concat [] @ concat ys                 (concat の定義より)
+
+2. xs = x :: xs' の場合
+  concat ((x :: xs') @ ys)
+= concat (x :: (xs' @ ys))              (公理2より)
+= x @ concat (xs' @ ys)                 (concat の定義より)
+= x @ (concat xs' @ concat ys)          (帰納法の仮定より)
+= (x @ concat xs') @ concat ys          (公理3より)
+= concat (x :: xs') @ concat ys         (concat の定義より)
+
+Q.E.D.
